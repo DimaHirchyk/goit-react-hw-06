@@ -1,18 +1,27 @@
 import { Formik, Form, Field } from "formik";
 import css from "./SearchBox.module.css";
+import { useDispatch } from "react-redux";
+import { filter } from "../../../redux/store";
 
-export default function SearchBox({ value, onFilter }) {
+export default function SearchBox() {
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    const filterAction = filter(e.target.value);
+    dispatch(filterAction);
+  };
+
   return (
     <>
-      <Formik initialValues={{ value }}>
+      <Formik>
         <Form className={css.cont}>
           <label htmlFor="username" className={css.label}>
             Find contacts by name
           </label>
           <Field
+            onChange={handleSubmit}
             type="text"
             name="username"
-            onChange={(e) => onFilter(e.target.value)}
             className={css.input}></Field>
         </Form>
       </Formik>
